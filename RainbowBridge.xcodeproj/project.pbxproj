@@ -10,6 +10,8 @@
 		1DC635431BA271AD0098BD19 /* RainbowBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DC635421BA271AD0098BD19 /* RainbowBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1DC6354A1BA271AD0098BD19 /* RainbowBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DC6353F1BA271AD0098BD19 /* RainbowBridge.framework */; settings = {ASSET_TAGS = (); }; };
 		1DC6354F1BA271AD0098BD19 /* RainbowBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC6354E1BA271AD0098BD19 /* RainbowBridgeTests.swift */; };
+		1DC6355A1BA272ED0098BD19 /* RainbowBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC635591BA272ED0098BD19 /* RainbowBridge.swift */; settings = {ASSET_TAGS = (); }; };
+		1DC6355C1BA2764B0098BD19 /* RainbowBridgeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC6355B1BA2764B0098BD19 /* RainbowBridgeController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		1DC635491BA271AD0098BD19 /* RainbowBridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RainbowBridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DC6354E1BA271AD0098BD19 /* RainbowBridgeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainbowBridgeTests.swift; sourceTree = "<group>"; };
 		1DC635501BA271AD0098BD19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1DC635591BA272ED0098BD19 /* RainbowBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RainbowBridge.swift; sourceTree = "<group>"; };
+		1DC6355B1BA2764B0098BD19 /* RainbowBridgeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RainbowBridgeController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,8 @@
 			isa = PBXGroup;
 			children = (
 				1DC635421BA271AD0098BD19 /* RainbowBridge.h */,
+				1DC635591BA272ED0098BD19 /* RainbowBridge.swift */,
+				1DC6355B1BA2764B0098BD19 /* RainbowBridgeController.swift */,
 				1DC635441BA271AD0098BD19 /* Info.plist */,
 			);
 			path = RainbowBridge;
@@ -142,6 +148,7 @@
 		1DC635361BA271AD0098BD19 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "林 柏楊";
 				TargetAttributes = {
@@ -195,6 +202,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DC6355A1BA272ED0098BD19 /* RainbowBridge.swift in Sources */,
+				1DC6355C1BA2764B0098BD19 /* RainbowBridgeController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,6 +318,7 @@
 		1DC635541BA271AD0098BD19 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -319,12 +329,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.thammin.RainbowBridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		1DC635551BA271AD0098BD19 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
