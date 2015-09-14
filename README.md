@@ -2,8 +2,8 @@
 A native bridge that using WKScriptMessageHandler to expose native function to JavaScript
 
 Supported Api:
-* [playVibration](#playVibration) - Play vibration
-* [authenticateTouchId](#authenticateTouchId) - Authenticate with Touch Id
+* [playVibration](#playvibration) - Play vibration
+* [authenticateTouchId](#authenticatetouchid) - Authenticate with Touch Id
 
 ## Requirements:
 * ios >= 8.0
@@ -62,7 +62,8 @@ window.webkit.messageHandlers.rainbowBridge.postMessage(data);
 
 ## Supported Api:
 
-### playVibration - [ref](https://developer.apple.com/library/ios/documentation/AudioToolbox/Reference/SystemSoundServicesReference/#//apple_ref/c/func/AudioServicesPlayAlertSound)
+### playVibration ###
+[ref](https://developer.apple.com/library/ios/documentation/AudioToolbox/Reference/SystemSoundServicesReference/#//apple_ref/c/func/AudioServicesPlayAlertSound) -
 Plays a system sound as an alert.
 ```javascript
 {
@@ -70,7 +71,8 @@ Plays a system sound as an alert.
 }
 ```
 
-### authenticateTouchId - [ref](https://developer.apple.com/library/prerelease/ios/documentation/LocalAuthentication/Reference/LAContext_Class/index.html#//apple_ref/occ/instm/LAContext)
+### authenticateTouchId ###
+[ref](https://developer.apple.com/library/prerelease/ios/documentation/LocalAuthentication/Reference/LAContext_Class/index.html#//apple_ref/occ/instm/LAContext) -
 Request the user to authenticate themselves using personal information such as a fingerprint registered with Touch ID.
 ```javascript
 {
