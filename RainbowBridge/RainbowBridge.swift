@@ -25,6 +25,8 @@ public class RainbowBridge {
         // TODO: take options from user
         webView.allowsBackForwardNavigationGestures = false
         
+        controller.setTargetView(webView)
+        
         return webView
     }
     
