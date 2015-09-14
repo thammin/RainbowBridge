@@ -48,8 +48,8 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
             let wrappedApiName = object["wrappedApiName"]! as! String
         
             switch wrappedApiName {
-            case "AudioServicesPlayAlertSound":
-                self._AudioServicesPlayAlertSound()
+            case "playVibration":
+                self._playVibration()
             default:
                 print("Invalid wrapped api name")
             }
@@ -83,7 +83,7 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
     /**
     Play vibration
     */
-    func _AudioServicesPlayAlertSound() {
+    func _playVibration() {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
 }

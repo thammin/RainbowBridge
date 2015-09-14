@@ -34,7 +34,7 @@ in Javascript
 // define callback if needed
 window.rainbowBridge = {
   callbacks: {
-    'onPlayAlertSound': function() {
+    'onPlayVibration': function() {
       console.log('Alert Sound had been played.');
     }
   },
@@ -54,7 +54,7 @@ function createBridgeObjectString(name, id) {
 }
 
 // create and send the stringified json object to swift
-var data = createBridgeObjectString('AudioServicesPlayAlertSound', 'onPlayAlertSound');
+var data = createBridgeObjectString('playVibration', 'onPlayVibration');
 window.webkit.messageHandlers.rainbowBridge.postMessage(data);
 ```
 
