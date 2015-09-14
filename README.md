@@ -4,6 +4,10 @@ A native bridge that using WKScriptMessageHandler to expose native function to J
 Supported Api:
 * `AudioServicesPlayAlertSound` - Play vibration
 
+## Requirements:
+* ios >= 8.0
+* swift 2
+
 ## Install with cocoapods
 * PodFile
 ```
