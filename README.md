@@ -34,12 +34,12 @@ in Javascript
 // define callback if needed
 window.rainbowBridge = {
   callbacks: {
-    'onPlayVibration': function() {
-      console.log('Alert Sound had been played.');
+    'onPlayVibration': function(returnedValue) {
+      console.log('Vibration played = ', returnedValue); // Vibration played = true
     }
   },
-  executeCallback: function(id) {
-    this.callbacks[id] && this.callbacks[id]();
+  executeCallback: function(id, returnedValue) {
+    this.callbacks[id] && this.callbacks[id](returnedValue);
   }
 };
 
@@ -49,6 +49,7 @@ function createBridgeObjectString(name, id) {
     wrappedApiName: name,
     callbackId: id
   };
+
 
   return JSON.stringify(obj);
 }

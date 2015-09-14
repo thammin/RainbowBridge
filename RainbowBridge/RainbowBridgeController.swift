@@ -8,6 +8,7 @@
 
 import WebKit
 import AudioToolbox
+import LocalAuthentication
 
 class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
     
@@ -45,17 +46,22 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
     */
     func callNativeApi(withObject object: AnyObject) {
         if object["wrappedApiName"] as? String != nil {
-            let wrappedApiName = object["wrappedApiName"]! as! String
-        
-            switch wrappedApiName {
-            case "playVibration":
-                self._playVibration()
-            default:
-                print("Invalid wrapped api name")
+            
+            // exeucte Javascript callback if callbackId is passed
+            func cb(returnedValue: String?) {
+                if object["callbackId"] as? String != nil {
+                    callback(object["callbackId"]! as! String, returnedValue: returnedValue)
+                }
             }
             
-            if object["callbackId"] as? String != nil {
-                callback(object["callbackId"]! as! String)
+            let wrappedApiName = object["wrappedApiName"]! as! String
+            switch wrappedApiName {
+            case "playVibration":
+                self._playVibration({ cb($0) })
+            case "authenticateTouchId":
+                self._authenticateTouchId(reason: object["reason"]! as! String, cb: { cb($0) })
+            default:
+                print("Invalid wrapped api name")
             }
         }
     }
@@ -64,9 +70,10 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
     Execute Javascript callback
     
     :param: id An unique Id that linked with callback
+    :param: returnedValue A String value to be return to Javascript callback
     */
-    func callback(id: String) {
-        let evaluateString = "window.rainbowBridge.executeCallback(\(id))"
+    func callback(id: String, returnedValue: String?) {
+        let evaluateString = "window.rainbowBridge.executeCallback(\(id), \(returnedValue! as String))"
         self.webView.evaluateJavaScript(evaluateString, completionHandler: nil)
     }
     
@@ -82,8 +89,28 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
     
     /**
     Play vibration
+    
+    :param: cb Javascript callback
     */
-    func _playVibration() {
+    func _playVibration(cb: String -> ()) {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        cb("true")
+    }
+    
+    /**
+    Touch id authentication
+    
+    :param: reason message to be viewed when authentication prompted up
+    :param: cb Javascript callback
+    */
+    func _authenticateTouchId(reason reason: String, cb: String -> ()) {
+        let authContext = LAContext()
+        if authContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: nil) {
+            authContext.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics,
+                localizedReason: reason,
+                reply: {(success: Bool, error: NSError?) -> Void in
+                    cb(String(stringInterpolationSegment: success))
+            })
+        }
     }
 }
