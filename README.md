@@ -2,6 +2,7 @@
 A native bridge that using WKScriptMessageHandler to expose native function to JavaScript
 
 Supported Api:
+* [scanMetadata](#scanmetadata) - Scan specified type of metadata using camera
 * [playVibration](#playvibration) - Play vibration
 * [authenticateTouchId](#authenticatetouchid) - Authenticate with Touch Id
 
@@ -61,6 +62,35 @@ window.webkit.messageHandlers.rainbowBridge.postMessage(data);
 ```
 
 ## Supported Api:
+
+### scanMetadata ###
+[ref](https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVMetadataMachineReadableCodeObject_Class/#//apple_ref/occ/instp/AVMetadataMachineReadableCodeObject/stringValue)
+Scan and detect one-dimensional or two-dimensional barcode.
+This will return a callback with detected data as argument
+
+```javascript
+{
+  wrappedApiName: 'scanMetadata',
+  metadataTypes: ['org.iso.QRCode', 'org.gs1.EAN-13'] // array of types to be detected
+}
+```
+MetadataTypes:
+```
+face
+org.iso.Aztec
+org.iso.Code128
+org.iso.Code39
+org.iso.Code39Mod43 
+com.intermec.Code93
+org.iso.DataMatrix
+org.gs1.EAN-13
+org.gs1.EAN-8
+org.ansi.Interleaved2of5
+org.gs1.ITF14
+org.iso.PDF417
+org.iso.QRCode
+org.gs1.UPC-E
+```
 
 ### playVibration ###
 [ref](https://developer.apple.com/library/ios/documentation/AudioToolbox/Reference/SystemSoundServicesReference/#//apple_ref/c/func/AudioServicesPlayAlertSound) -

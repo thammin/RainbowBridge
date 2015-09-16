@@ -8,12 +8,19 @@
 
 import WebKit
 import AudioToolbox
+import AVFoundation
 import LocalAuthentication
 
-class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
+class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler, AVCaptureMetadataOutputObjectsDelegate {
     
     // reference to webView
     var webView: WKWebView! = nil
+    
+    // some references
+    /// code reader references
+    var captureOutputCallbacks = Array<(String -> ())>()
+    var captureSession: AVCaptureSession?
+    var videoLayer: AVCaptureVideoPreviewLayer?
     
     /**
     Set the target webView as reference
@@ -56,6 +63,8 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
             
             let wrappedApiName = object["wrappedApiName"]! as! String
             switch wrappedApiName {
+            case "scanMetadata":
+                self._scanMetadata(object["metadataTypes"]! as! Array, cb: { cb($0) })
             case "playVibration":
                 self._playVibration({ cb($0) })
             case "authenticateTouchId":
@@ -77,6 +86,25 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
         self.webView.evaluateJavaScript(evaluateString, completionHandler: nil)
     }
     
+    func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+        
+        if metadataObjects.count > 0 {
+            let data: AVMetadataMachineReadableCodeObject  = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+            
+            self.captureSession?.stopRunning()
+            self.captureSession = nil
+            self.videoLayer?.removeFromSuperlayer()
+            self.videoLayer = nil
+            
+            let jsonString = "{type:'\(data.type)', stringValue:'\(data.stringValue)'}"
+            if self.captureOutputCallbacks.count > 0 {
+                self.captureOutputCallbacks[0](jsonString)
+                // add print to remove the `Expression resolves to an unused function` warning
+                print(self.captureOutputCallbacks.removeAtIndex(0))
+            }
+        }
+    }
+    
     ///
     ///  _   _       _   _              ___        _
     /// | \ | |     | | (_)            / _ \      (_)
@@ -86,6 +114,48 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler {
     /// \_| \_/\__,_|\__|_| \_/ \___| \_| |_/ .__/|_|___/
     ///                                     | |
     ///                                     |_|
+    
+    /**
+    Scan specified type of metadata using camera
+    
+    :param: metadataTypes code types
+    :param: cb JAvascript callback
+    */
+    func _scanMetadata(metadataTypes: [String], cb: String -> ()) {
+        self.captureSession = AVCaptureSession()
+        
+        var backCamera: AVCaptureDevice!
+        for device in AVCaptureDevice.devices() {
+            if device.position == AVCaptureDevicePosition.Back {
+                backCamera = device as! AVCaptureDevice
+            }
+        }
+        
+        do {
+            let videoInput = try AVCaptureDeviceInput(device: backCamera)
+            if self.captureSession?.canAddInput(videoInput) != nil {
+                self.captureSession?.addInput(videoInput)
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        let metadataOutput: AVCaptureMetadataOutput! = AVCaptureMetadataOutput()
+        if self.captureSession?.canAddOutput(metadataOutput) != nil {
+            self.captureSession?.addOutput(metadataOutput)
+            metadataOutput.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
+            metadataOutput.metadataObjectTypes = metadataTypes
+        }
+        
+        self.videoLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+        self.videoLayer!.frame = self.webView.bounds
+        self.videoLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
+        
+        self.webView.layer.addSublayer(self.videoLayer!)
+        self.captureOutputCallbacks.append(cb)
+        
+        self.captureSession?.startRunning()
+    }
     
     /**
     Play vibration
