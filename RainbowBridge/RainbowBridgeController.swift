@@ -11,7 +11,7 @@ import AudioToolbox
 import AVFoundation
 import LocalAuthentication
 
-class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler, AVCaptureMetadataOutputObjectsDelegate {
+class RainbowBridgeController: WKUserContentController {
     
     // reference to webView
     var webView: WKWebView! = nil
@@ -29,20 +29,6 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler, 
     */
     func setTargetView(view: WKWebView) {
         self.webView = view
-    }
-    
-    func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        if message.body is NSNull {
-            print("Null is not allowed.")
-            return
-        }
-        
-        do {
-            let json = try NSJSONSerialization.JSONObjectWithData(message.body.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers)
-            callNativeApi(withObject: json)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
     }
     
     /**
@@ -84,25 +70,6 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler, 
     func callback(id: String, returnedValue: String?) {
         let evaluateString = "window.rainbowBridge.executeCallback(\(id), \(returnedValue! as String))"
         self.webView.evaluateJavaScript(evaluateString, completionHandler: nil)
-    }
-    
-    func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
-        
-        if metadataObjects.count > 0 {
-            let data: AVMetadataMachineReadableCodeObject  = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-            
-            self.captureSession?.stopRunning()
-            self.captureSession = nil
-            self.videoLayer?.removeFromSuperlayer()
-            self.videoLayer = nil
-            
-            let jsonString = "{type:'\(data.type)', stringValue:'\(data.stringValue)'}"
-            if self.captureOutputCallbacks.count > 0 {
-                self.captureOutputCallbacks[0](jsonString)
-                // add print to remove the `Expression resolves to an unused function` warning
-                print(self.captureOutputCallbacks.removeAtIndex(0))
-            }
-        }
     }
     
     ///
@@ -181,6 +148,43 @@ class RainbowBridgeController: WKUserContentController, WKScriptMessageHandler, 
                 reply: {(success: Bool, error: NSError?) -> Void in
                     cb(String(stringInterpolationSegment: success))
             })
+        }
+    }
+}
+
+extension RainbowBridgeController: WKScriptMessageHandler {
+    func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+        if message.body is NSNull {
+            print("Null is not allowed.")
+            return
+        }
+        
+        do {
+            let json = try NSJSONSerialization.JSONObjectWithData(message.body.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers)
+            self.callNativeApi(withObject: json)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+}
+
+extension RainbowBridgeController: AVCaptureMetadataOutputObjectsDelegate {
+    func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+        
+        if metadataObjects.count > 0 {
+            let data: AVMetadataMachineReadableCodeObject  = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+            
+            self.captureSession?.stopRunning()
+            self.captureSession = nil
+            self.videoLayer?.removeFromSuperlayer()
+            self.videoLayer = nil
+            
+            let jsonString = "{type:'\(data.type)', stringValue:'\(data.stringValue)'}"
+            if self.captureOutputCallbacks.count > 0 {
+                self.captureOutputCallbacks[0](jsonString)
+                // add print to remove the `Expression resolves to an unused function` warning
+                print(self.captureOutputCallbacks.removeAtIndex(0))
+            }
         }
     }
 }
