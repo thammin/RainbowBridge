@@ -5,10 +5,13 @@ Supported Api:
 * [scanMetadata](#scanmetadata) - Scan specified type of metadata using camera
 * [playVibration](#playvibration) - Play vibration
 * [authenticateTouchId](#authenticatetouchid) - Authenticate with Touch Id
+* [joinPeerGroup](#joinpeergroup) - Join a peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
+* [sendEventToPeerGroup](#sendeventtopeergroup) - Send event to peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
 
 ## Requirements:
 * ios >= 8.0
 * swift 2
+* PeerKit
 
 ## Install with cocoapods
 * PodFile
@@ -16,6 +19,7 @@ Supported Api:
 platform :ios, '8.0'
 use_frameworks!
 
+pod 'PeerKit'
 pod 'RainbowBridge'
 ```
 
@@ -108,5 +112,66 @@ Request the user to authenticate themselves using personal information such as a
 {
   wrappedApiName: 'authenticateTouchId',
   reason: 'Verify with your finger'
+}
+```
+### joinPeerGroup ###
+[ref](https://developer.apple.com/library/prerelease/ios/documentation/MultipeerConnectivity/Reference/MultipeerConnectivityFramework) - 
+Join a peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git) as MultipeerConnectivity wrapper.
+This support Wi-Fi networks, peer-to-peer Wi-Fi, and Bluetooth personal area networks.
+```javascript
+{
+  wrappedApiName: 'joinPeerGroup',
+  peerGroupName: 'group1'
+}
+```
+
+The callbacks will be execute by 4 type of events
+* onConnecting - when connecting to a peer
+```javascript
+{
+  type: 'onConnecting',
+  myPeerId: <my device display name>,
+  targetPeerId: <target device display name>
+}
+```
+
+* onConnected - when connection to a peer had established
+```javascript
+{
+  type: 'onConnected',
+  myPeerId: <my device display name>,
+  targetPeerId: <target device display name>
+}
+```
+
+* onDisconnected - when connection to a peer had been released
+```javascript
+{
+  type: 'onDisconnected',
+  myPeerId: <my device display name>,
+  targetPeerId: <target device display name>
+}
+```
+
+* [onEvent](#sendeventtopeergroup) - when event received from a peer
+```javascript
+{
+  type: 'onEvent',
+  targetPeerId: <target device display name>,
+  event: <unique event name>,
+  object: <optional object to be passed by>
+}
+```
+
+### sendEventToPeerGroup ###
+Send a event with optional object data to all connected peers in peer group.
+```javascript
+{
+  wrappedApiName: 'sendEventToPeerGroup',
+  event: 'attack',
+  object: {
+    weapon: 'gun',
+    damage: 577
+  }
 }
 ```
