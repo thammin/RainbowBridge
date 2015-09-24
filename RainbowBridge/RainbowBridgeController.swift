@@ -7,9 +7,11 @@
 //
 
 import WebKit
+import PeerKit
 import AudioToolbox
 import AVFoundation
 import LocalAuthentication
+import MultipeerConnectivity
 
 class RainbowBridgeController: WKUserContentController {
     
@@ -72,7 +74,7 @@ class RainbowBridgeController: WKUserContentController {
     :param: returnedValue A String value to be return to Javascript callback
     */
     func callback(id: String, returnedValue: String?) {
-        let evaluateString = "window.rainbowBridge.executeCallback(\(id), \(returnedValue! as String))"
+        let evaluateString = "window.rainbowBridge.executeCallback('\(id)', \(returnedValue! as String))"
         self.webView.evaluateJavaScript(evaluateString, completionHandler: nil)
     }
     
@@ -93,7 +95,37 @@ class RainbowBridgeController: WKUserContentController {
     :param: cb Javascript callback
     */
     func _joinPeerGroup(peerGroupName: String, cb: String -> ()) {
-        print("joining Peer Group:\(peerGroupName)")
+        // when connecting to a peer
+        PeerKit.onConnecting = {
+            (myPeerId, targetPeerId) -> () in
+            cb("{ type: 'onConnecting', myPeerId: '\(myPeerId.displayName)', targetPeerId: '\(targetPeerId.displayName)'}")
+        }
+        
+        // when connection to a peer had established
+        PeerKit.onConnect = {
+            (myPeerId, targetPeerId) -> () in
+            cb("{ type: 'onConnected', myPeerId: '\(myPeerId.displayName)', targetPeerId: '\(targetPeerId.displayName)'}")
+        }
+        
+        // when connection to a peer had been released
+        PeerKit.onDisconnect = {
+            (myPeerId, targetPeerId) -> () in
+            cb("{ type: 'onDisconnected', myPeerId: '\(myPeerId.displayName)', targetPeerId: '\(targetPeerId.displayName)'}")
+        }
+        
+        // when event received from a peer
+        PeerKit.onEvent = {
+            (targetPeerId, event, object) -> () in
+            do {
+                let jsonData = try NSJSONSerialization.dataWithJSONObject(object!, options: NSJSONWritingOptions.PrettyPrinted)
+                let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
+                cb("{ type: 'onEvent', targetPeerId: '\(targetPeerId)', event: '\(event)', object: \(jsonString)}")
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        
+        PeerKit.transceive(peerGroupName)
     }
     
     /**
@@ -104,7 +136,8 @@ class RainbowBridgeController: WKUserContentController {
     :param: cb Javascript callback
     */
     func _sendEventToPeerGroup(event: String, object: AnyObject?, cb: String -> ()) {
-        print("sending:\(event), \(object)")
+        let peers = PeerKit.session?.connectedPeers as [MCPeerID]? ?? []
+        PeerKit.sendEvent(event, object: object, toPeers: peers)
     }
     
     /**
