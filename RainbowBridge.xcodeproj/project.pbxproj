@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1DC635431BA271AD0098BD19 /* RainbowBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DC635421BA271AD0098BD19 /* RainbowBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1DC6354A1BA271AD0098BD19 /* RainbowBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DC6353F1BA271AD0098BD19 /* RainbowBridge.framework */; settings = {ASSET_TAGS = (); }; };
+		1DC6354A1BA271AD0098BD19 /* RainbowBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DC6353F1BA271AD0098BD19 /* RainbowBridge.framework */; };
 		1DC6354F1BA271AD0098BD19 /* RainbowBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC6354E1BA271AD0098BD19 /* RainbowBridgeTests.swift */; };
-		1DC6355A1BA272ED0098BD19 /* RainbowBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC635591BA272ED0098BD19 /* RainbowBridge.swift */; settings = {ASSET_TAGS = (); }; };
-		1DC6355C1BA2764B0098BD19 /* RainbowBridgeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC6355B1BA2764B0098BD19 /* RainbowBridgeController.swift */; settings = {ASSET_TAGS = (); }; };
+		1DC6355A1BA272ED0098BD19 /* RainbowBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC635591BA272ED0098BD19 /* RainbowBridge.swift */; };
+		1DC6355C1BA2764B0098BD19 /* RainbowBridgeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC6355B1BA2764B0098BD19 /* RainbowBridgeController.swift */; };
+		475F2227404F59D3BCEE6CF4 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85010802FBB4D6F321CDFA40 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +26,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		14BC22177B61AECE01760C76 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		1DC6353F1BA271AD0098BD19 /* RainbowBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RainbowBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DC635421BA271AD0098BD19 /* RainbowBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RainbowBridge.h; sourceTree = "<group>"; };
 		1DC635441BA271AD0098BD19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -33,6 +35,8 @@
 		1DC635501BA271AD0098BD19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DC635591BA272ED0098BD19 /* RainbowBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RainbowBridge.swift; sourceTree = "<group>"; };
 		1DC6355B1BA2764B0098BD19 /* RainbowBridgeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RainbowBridgeController.swift; sourceTree = "<group>"; };
+		85010802FBB4D6F321CDFA40 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2BE0D2860EE0A703423434C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				475F2227404F59D3BCEE6CF4 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +65,8 @@
 				1DC635411BA271AD0098BD19 /* RainbowBridge */,
 				1DC6354D1BA271AD0098BD19 /* RainbowBridgeTests */,
 				1DC635401BA271AD0098BD19 /* Products */,
+				559D47AECCD3DBC3F5D8B233 /* Pods */,
+				703AEED2898B10B9AD1C4FF3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,6 +99,23 @@
 			path = RainbowBridgeTests;
 			sourceTree = "<group>";
 		};
+		559D47AECCD3DBC3F5D8B233 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				14BC22177B61AECE01760C76 /* Pods.debug.xcconfig */,
+				C2BE0D2860EE0A703423434C /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		703AEED2898B10B9AD1C4FF3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				85010802FBB4D6F321CDFA40 /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -110,10 +134,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DC635531BA271AD0098BD19 /* Build configuration list for PBXNativeTarget "RainbowBridge" */;
 			buildPhases = (
+				EDAAB4101077D0AF9DF4767F /* Check Pods Manifest.lock */,
 				1DC6353A1BA271AD0098BD19 /* Sources */,
 				1DC6353B1BA271AD0098BD19 /* Frameworks */,
 				1DC6353C1BA271AD0098BD19 /* Headers */,
 				1DC6353D1BA271AD0098BD19 /* Resources */,
+				46AE4D3993415D5D74D31674 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -196,6 +222,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		46AE4D3993415D5D74D31674 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EDAAB4101077D0AF9DF4767F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1DC6353A1BA271AD0098BD19 /* Sources */ = {
@@ -317,6 +376,7 @@
 		};
 		1DC635541BA271AD0098BD19 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14BC22177B61AECE01760C76 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -335,6 +395,7 @@
 		};
 		1DC635551BA271AD0098BD19 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C2BE0D2860EE0A703423434C /* Pods.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
@@ -389,6 +450,7 @@
 				1DC635551BA271AD0098BD19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1DC635561BA271AD0098BD19 /* Build configuration list for PBXNativeTarget "RainbowBridgeTests" */ = {
 			isa = XCConfigurationList;
@@ -397,6 +459,7 @@
 				1DC635581BA271AD0098BD19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

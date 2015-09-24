@@ -49,6 +49,10 @@ class RainbowBridgeController: WKUserContentController {
             
             let wrappedApiName = object["wrappedApiName"]! as! String
             switch wrappedApiName {
+            case "joinPeerGroup":
+                self._joinPeerGroup(object["peerGroupName"]! as! String, cb: { cb($0) })
+            case "sendEventToPeerGroup":
+                self._sendEventToPeerGroup(object["event"]! as! String, object: object["object"]! as AnyObject?, cb: { cb($0) })
             case "scanMetadata":
                 self._scanMetadata(object["metadataTypes"]! as! Array, cb: { cb($0) })
             case "playVibration":
@@ -81,6 +85,27 @@ class RainbowBridgeController: WKUserContentController {
     /// \_| \_/\__,_|\__|_| \_/ \___| \_| |_/ .__/|_|___/
     ///                                     | |
     ///                                     |_|
+    
+    /**
+    Join a peer group with specified name
+    
+    :param: peerGroupName unique name of the group
+    :param: cb Javascript callback
+    */
+    func _joinPeerGroup(peerGroupName: String, cb: String -> ()) {
+        print("joining Peer Group:\(peerGroupName)")
+    }
+    
+    /**
+    Send event with optional object to peer group
+    
+    :param: event unique event name
+    :param: object optional object
+    :param: cb Javascript callback
+    */
+    func _sendEventToPeerGroup(event: String, object: AnyObject?, cb: String -> ()) {
+        print("sending:\(event), \(object)")
+    }
     
     /**
     Scan specified type of metadata using camera

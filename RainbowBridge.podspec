@@ -9,4 +9,5 @@ Pod::Spec.new do |s|
   s.source_files  = "RainbowBridge/*.{h,swift}"
   s.ios.deployment_target = "8.0"
   s.requires_arc = true
+  s.dependency 'PeerKit'
 end
