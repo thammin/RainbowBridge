@@ -55,6 +55,8 @@ class RainbowBridgeController: WKUserContentController {
                 self._joinPeerGroup(object["peerGroupName"]! as! String, cb: { cb($0) })
             case "sendEventToPeerGroup":
                 self._sendEventToPeerGroup(object["event"]! as! String, object: object["object"]! as AnyObject?, cb: { cb($0) })
+            case "leavePeerGroup":
+                self._leavePeerGroup({ cb($0) })
             case "scanMetadata":
                 self._scanMetadata(object["metadataTypes"]! as! Array, cb: { cb($0) })
             case "playVibration":
@@ -138,6 +140,17 @@ class RainbowBridgeController: WKUserContentController {
     func _sendEventToPeerGroup(event: String, object: AnyObject?, cb: String -> ()) {
         let peers = PeerKit.session?.connectedPeers as [MCPeerID]? ?? []
         PeerKit.sendEvent(event, object: object, toPeers: peers)
+        cb("{ connectedPeers: '\(peers)'}")
+    }
+    
+    /**
+    Leave any peer group we had joined
+    
+    :param: cb Javascript callback
+    */
+    func _leavePeerGroup(cb: String -> ()) {
+        PeerKit.stopTransceiving()
+        cb("true")
     }
     
     /**
