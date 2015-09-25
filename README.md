@@ -7,6 +7,7 @@ Supported Api:
 * [authenticateTouchId](#authenticatetouchid) - Authenticate with Touch Id
 * [joinPeerGroup](#joinpeergroup) - Join a peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
 * [sendEventToPeerGroup](#sendeventtopeergroup) - Send event to peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
+* [leavePeerGroup](#leavepeergroup) - Leave any joined peer group [PeerKit](#https://github.com/jpsim/PeerKit.git)
 
 ## Requirements:
 * ios >= 8.0
@@ -173,5 +174,13 @@ Send a event with optional object data to all connected peers in peer group.
     weapon: 'gun',
     damage: 577
   }
+}
+```
+
+### leavePeerGroup ###
+Leave any joined peer group.
+```javascript
+{
+  wrappedApiName: 'leavePeerGroup'
 }
 ```
