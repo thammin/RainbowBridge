@@ -140,7 +140,12 @@ class RainbowBridgeController: WKUserContentController {
     func _sendEventToPeerGroup(event: String, object: AnyObject?, cb: String -> ()) {
         let peers = PeerKit.session?.connectedPeers as [MCPeerID]? ?? []
         PeerKit.sendEvent(event, object: object, toPeers: peers)
-        cb("{ connectedPeers: '\(peers)'}")
+        
+        let peersJson = peers.map {
+            (let peer) -> String in
+            return peer.displayName
+        }
+        cb("{ connectedPeers: \(peersJson)}")
     }
     
     /**
