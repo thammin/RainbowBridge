@@ -127,6 +127,7 @@ class RainbowBridgeController: WKUserContentController {
             }
         }
         
+        PeerKit.transceiver = Transceiver(displayName: PeerKit.myName)
         PeerKit.transceive(peerGroupName)
     }
     
