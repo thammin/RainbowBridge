@@ -23,6 +23,8 @@ class RainbowBridgeController: WKUserContentController {
     var captureOutputCallbacks = Array<(String -> ())>()
     var captureSession: AVCaptureSession?
     var videoLayer: AVCaptureVideoPreviewLayer?
+    /// sound player references
+    var soundPlayers: [AVAudioPlayer] = []
     
     /**
     Set the target webView as reference
@@ -61,8 +63,12 @@ class RainbowBridgeController: WKUserContentController {
                 self._downloadAndCache(object["url"]! as! String, path: object["path"]! as! String, isOverwrite: object["isOverwrite"]! as! Bool, cb: { cb($0) })
             case "clearCache":
                 self._clearCache(object["path"]! as! String, cb: { cb($0) })
+            case "initializeSound":
+                self._initialieSound(object["file"]! as! String, cb: { cb($0) })
+            case "disposeSound":
+                self._disposeSound(object["index"]! as! Int, cb: { cb($0) })
             case "playSound":
-                self._playSound(object["file"]! as! String, cb: { cb($0) })
+                self._playSound(object["index"]! as! Int, cb: { cb($0) })
             case "scanMetadata":
                 self._scanMetadata(object["metadataTypes"]! as! Array, cb: { cb($0) })
             case "playVibration":
@@ -231,18 +237,42 @@ class RainbowBridgeController: WKUserContentController {
     }
     
     /**
-    Play cached sound
+    Initialize sound with AVAudioPlayer
     
     :param: file the full path of cached sound
     :param: cb Javascript callback
     */
-    func _playSound(file: String, cb: String -> ()) {
+    func _initialieSound(file: String, cb: String -> ()) {
         do {
             let player = try AVAudioPlayer.init(contentsOfURL: NSURL.fileURLWithPath(file))
-            player.play()
+            player.prepareToPlay()
+            self.soundPlayers.append(player)
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+        cb("{ index: \(self.soundPlayers.count) }")
+    }
+    
+    /**
+    Dispose sound instance
+    
+    :param: index index of sound
+    :param: cb Javascript callback
+    */
+    func _disposeSound(index: Int, cb: String -> ()) {
+        self.soundPlayers[index].stop()
+        self.soundPlayers.removeAtIndex(index)
+        cb("true")
+    }
+    
+    /**
+    Play cached sound
+    
+    :param: index index of sound
+    :param: cb Javascript callback
+    */
+    func _playSound(index: Int, cb: String -> ()) {
+        self.soundPlayers[index].play()
         cb("true")
     }
     
