@@ -9,7 +9,10 @@ Supported Api:
 * [sendEventToPeerGroup](#sendeventtopeergroup) - Send event to peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
 * [leavePeerGroup](#leavepeergroup) - Leave any joined peer group [PeerKit](#https://github.com/jpsim/PeerKit.git)
 * [downloadAndCache](#downloadandcache) - Download and cache a file from remote url
-* [clearCache](#clearcache) - clear the cached file
+* [clearCache](#clearcache) - Clear the cached file
+* [initializeSound](#initializeSound) - Initialize sound with local sound file
+* [disposeSound](#disposeSound) - Dispose sound instance
+* [playSound](#playsound) - Play the sound instance
 
 ## Requirements:
 * ios >= 8.0
@@ -128,8 +131,8 @@ This support Wi-Fi networks, peer-to-peer Wi-Fi, and Bluetooth personal area net
 }
 ```
 
-The callbacks will be execute by 4 type of events
-* onConnecting - when connecting to a peer
+The callbacks will be execute by 4 type of events.
+* onConnecting - when connecting to a peer.
 ```javascript
 {
   type: 'onConnecting',
@@ -138,7 +141,7 @@ The callbacks will be execute by 4 type of events
 }
 ```
 
-* onConnected - when connection to a peer had established
+* onConnected - when connection to a peer had established.
 ```javascript
 {
   type: 'onConnected',
@@ -147,7 +150,7 @@ The callbacks will be execute by 4 type of events
 }
 ```
 
-* onDisconnected - when connection to a peer had been released
+* onDisconnected - when connection to a peer had been released.
 ```javascript
 {
   type: 'onDisconnected',
@@ -156,7 +159,7 @@ The callbacks will be execute by 4 type of events
 }
 ```
 
-* [onEvent](#sendeventtopeergroup) - when event received from a peer
+* [onEvent](#sendeventtopeergroup) - when event received from a peer.
 ```javascript
 {
   type: 'onEvent',
@@ -189,22 +192,53 @@ Leave any joined peer group.
 
 ### downloadAndCache ###
 [ref](https://developer.apple.com/library/ios/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview) - 
-Download file with specified url and cache to the Application Support Directory
+Download file with specified url and cache to the Application Support Directory.
 The contents of this directory are backed up by iTunes.
+Supported filename only currently.
 ```javascript
 {
   wrappedApiName: 'downloadAndCache',
   url: 'https://www.abc.com/xyz.w4a',
-  path: '/sounds/xyz.w4a',
+  path: '/xyz.w4a',
   isOverwrite: true
 }
 ```
 
 ### clearCache ###
-Clear the cached file in the Application Support Directory
+Clear the cached file in the Application Support Directory.
 ```javascript
 {
   wrappedApiName: 'clearCache',
-  path: '/sounds/xyz.w4a'
+  path: '/xyz.w4a'
+}
+```
+
+### initializeSound ###
+Initialize sound with AVAudioPlayer.
+This will return an index value that refer to instance within the sound instances array.
+```javascript
+{
+  wrappedApiName: 'initializeSound',
+  file: '/var/mobile/Containers/Data/Application/D411117D-DC60-4A30-8C1D-1AF5304F9F5A/Library/Application Support/xyz.w4a'
+}
+```
+
+### disposeSound ###
+Dispose sound instance.
+```javascript
+{
+  wrappedApiName: 'disposeSound',
+  index: 0
+}
+```
+
+### playSound ###
+[ref](https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioPlayerClassReference/) - 
+Play cached sound instance.
+```javascript
+{
+  wrappedApiName: 'playSound',
+  index: 0,
+  isRepeat: true
 }
 ```

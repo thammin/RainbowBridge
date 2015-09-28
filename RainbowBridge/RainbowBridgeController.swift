@@ -64,11 +64,11 @@ class RainbowBridgeController: WKUserContentController {
             case "clearCache":
                 self._clearCache(object["path"]! as! String, cb: { cb($0) })
             case "initializeSound":
-                self._initialieSound(object["file"]! as! String, cb: { cb($0) })
+                self._initializeSound(object["file"]! as! String, cb: { cb($0) })
             case "disposeSound":
                 self._disposeSound(object["index"]! as! Int, cb: { cb($0) })
             case "playSound":
-                self._playSound(object["index"]! as! Int, cb: { cb($0) })
+                self._playSound(object["index"]! as! Int, isRepeat: object["isRepeat"]! as! Int, cb: { cb($0) })
             case "scanMetadata":
                 self._scanMetadata(object["metadataTypes"]! as! Array, cb: { cb($0) })
             case "playVibration":
@@ -242,7 +242,7 @@ class RainbowBridgeController: WKUserContentController {
     :param: file the full path of cached sound
     :param: cb Javascript callback
     */
-    func _initialieSound(file: String, cb: String -> ()) {
+    func _initializeSound(file: String, cb: String -> ()) {
         do {
             let player = try AVAudioPlayer.init(contentsOfURL: NSURL.fileURLWithPath(file))
             player.prepareToPlay()
@@ -250,7 +250,7 @@ class RainbowBridgeController: WKUserContentController {
         } catch let error as NSError {
             print(error.localizedDescription)
         }
-        cb("{ index: \(self.soundPlayers.count) }")
+        cb("{ index: \(self.soundPlayers.count - 1) }")
     }
     
     /**
@@ -269,10 +269,12 @@ class RainbowBridgeController: WKUserContentController {
     Play cached sound
     
     :param: index index of sound
+    :param: isRepeat play with looping
     :param: cb Javascript callback
     */
-    func _playSound(index: Int, cb: String -> ()) {
+    func _playSound(index: Int, isRepeat: Int, cb: String -> ()) {
         self.soundPlayers[index].play()
+        self.soundPlayers[index].numberOfLoops = -isRepeat
         cb("true")
     }
     
