@@ -5,13 +5,13 @@ Supported Api:
 * [scanMetadata](#scanmetadata) - Scan specified type of metadata using camera
 * [playVibration](#playvibration) - Play vibration
 * [authenticateTouchId](#authenticatetouchid) - Authenticate with Touch Id
-* [joinPeerGroup](#joinpeergroup) - Join a peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
-* [sendEventToPeerGroup](#sendeventtopeergroup) - Send event to peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
-* [leavePeerGroup](#leavepeergroup) - Leave any joined peer group [PeerKit](#https://github.com/jpsim/PeerKit.git)
+* [joinPeerGroup](#joinpeergroup) - Join a peer group using [PeerKit](https://github.com/jpsim/PeerKit.git)
+* [sendEventToPeerGroup](#sendeventtopeergroup) - Send event to peer group using [PeerKit](https://github.com/jpsim/PeerKit.git)
+* [leavePeerGroup](#leavepeergroup) - Leave any joined peer group [PeerKit](https://github.com/jpsim/PeerKit.git)
 * [downloadAndCache](#downloadandcache) - Download and cache a file from remote url
 * [clearCache](#clearcache) - Clear the cached file
-* [initializeSound](#initializeSound) - Initialize sound with local sound file
-* [disposeSound](#disposeSound) - Dispose sound instance
+* [initializeSound](#initializesound) - Initialize sound with local sound file
+* [disposeSound](#disposesound) - Dispose sound instance
 * [playSound](#playsound) - Play the sound instance
 
 ## Requirements:
