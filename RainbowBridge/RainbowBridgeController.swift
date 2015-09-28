@@ -58,7 +58,7 @@ class RainbowBridgeController: WKUserContentController {
             case "leavePeerGroup":
                 self._leavePeerGroup({ cb($0) })
             case "downloadAndCache":
-                self._downloadAndCache(object["url"]! as! String, path: object["path"]! as! String, isOverwrite: object["isOverWrite"]! as! Bool, cb: { cb($0) })
+                self._downloadAndCache(object["url"]! as! String, path: object["path"]! as! String, isOverwrite: object["isOverwrite"]! as! Bool, cb: { cb($0) })
             case "clearCache":
                 self._clearCache(object["path"]! as! String, cb: { cb($0) })
             case "scanMetadata":
@@ -174,11 +174,20 @@ class RainbowBridgeController: WKUserContentController {
     func _downloadAndCache(url: String, path: String, isOverwrite: Bool, cb: String -> ()) {
         let fileManager = NSFileManager.defaultManager()
         let dir = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).first
-        let file = dir?.stringByAppendingString(NSBundle.mainBundle().bundleIdentifier!).stringByAppendingString(path)
+        let file = dir?.stringByAppendingString("/" + NSBundle.mainBundle().bundleIdentifier! + path)
+        
+        // create Application Support directory if not existed
+        if (fileManager.fileExistsAtPath(dir!)) {
+            do {
+                try fileManager.createDirectoryAtPath(dir!, withIntermediateDirectories: true, attributes: nil)
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
         
         // skip download if file is already existed
         if (fileManager.fileExistsAtPath(file!) && !isOverwrite) {
-            cb("The \(file) is already existed.")
+            cb("'The `\(file!)` is already existed.'")
             return
         }
         
@@ -194,7 +203,7 @@ class RainbowBridgeController: WKUserContentController {
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-            cb("\(file) had been downloaded sucessful.")
+            cb("'`\(file!)` had been downloaded sucessful.'")
         })
         
         downloadTask.resume()
@@ -209,14 +218,14 @@ class RainbowBridgeController: WKUserContentController {
     func _clearCache(path: String, cb: String -> ()) {
         let fileManager = NSFileManager.defaultManager()
         let dir = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).first
-        let file = dir?.stringByAppendingString(NSBundle.mainBundle().bundleIdentifier!).stringByAppendingString(path)
+        let file = dir?.stringByAppendingString("/" + NSBundle.mainBundle().bundleIdentifier! + path)
     
         do {
             try fileManager.removeItemAtPath(file!)
         } catch let error as NSError {
             print(error.localizedDescription)
         }
-        cb("\(file) had been cleared.")
+        cb("'`\(file!)` had been cleared.'")
     }
     
     /**
