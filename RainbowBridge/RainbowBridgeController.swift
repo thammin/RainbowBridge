@@ -189,7 +189,7 @@ class RainbowBridgeController: WKUserContentController {
         
         // skip download if file is already existed
         if (fileManager.fileExistsAtPath(file!) && !isOverwrite) {
-            cb("'The `\(file!)` is already existed.'")
+            cb("{ message: 'The file is already existed.', file: '\(file!)' }")
             return
         }
         
@@ -205,7 +205,7 @@ class RainbowBridgeController: WKUserContentController {
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-            cb("'`\(file!)` had been downloaded sucessful.'")
+            cb("{ message: 'File had been downloaded sucessful.', file: '\(file!)' }")
         })
         
         downloadTask.resume()
@@ -227,7 +227,7 @@ class RainbowBridgeController: WKUserContentController {
         } catch let error as NSError {
             print(error.localizedDescription)
         }
-        cb("'`\(file!)` had been cleared.'")
+        cb("{ message: 'File had been cleared.', file: '\(file!)' }")
     }
     
     /**
