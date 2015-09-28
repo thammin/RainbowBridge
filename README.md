@@ -8,6 +8,8 @@ Supported Api:
 * [joinPeerGroup](#joinpeergroup) - Join a peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
 * [sendEventToPeerGroup](#sendeventtopeergroup) - Send event to peer group using [PeerKit](#https://github.com/jpsim/PeerKit.git)
 * [leavePeerGroup](#leavepeergroup) - Leave any joined peer group [PeerKit](#https://github.com/jpsim/PeerKit.git)
+* [downloadAndCache](#downloadandcache) - Download and cache a file from remote url
+* [clearCache](#clearcache) - clear the cached file
 
 ## Requirements:
 * ios >= 8.0
@@ -182,5 +184,27 @@ Leave any joined peer group.
 ```javascript
 {
   wrappedApiName: 'leavePeerGroup'
+}
+```
+
+### downloadAndCache ###
+[ref](https://developer.apple.com/library/ios/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview) - 
+Download file with specified url and cache to the Application Support Directory
+The contents of this directory are backed up by iTunes.
+```javascript
+{
+  wrappedApiName: 'downloadAndCache',
+  url: 'https://www.abc.com/xyz.w4a',
+  path: '/sounds/xyz.w4a',
+  isOverwrite: true
+}
+```
+
+### clearCache ###
+Clear the cached file in the Application Support Directory
+```javascript
+{
+  wrappedApiName: 'clearCache',
+  path: '/sounds/xyz.w4a'
 }
 ```

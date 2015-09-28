@@ -57,6 +57,10 @@ class RainbowBridgeController: WKUserContentController {
                 self._sendEventToPeerGroup(object["event"]! as! String, object: object["object"]! as AnyObject?, cb: { cb($0) })
             case "leavePeerGroup":
                 self._leavePeerGroup({ cb($0) })
+            case "downloadAndCache":
+                self._downloadAndCache(object["url"]! as! String, path: object["path"]! as! String, isOverwrite: object["isOverWrite"]! as! Bool, cb: { cb($0) })
+            case "clearCache":
+                self._clearCache(object["path"]! as! String, cb: { cb($0) })
             case "scanMetadata":
                 self._scanMetadata(object["metadataTypes"]! as! Array, cb: { cb($0) })
             case "playVibration":
@@ -160,7 +164,64 @@ class RainbowBridgeController: WKUserContentController {
     }
     
     /**
+    Download file with specified url and cache to the Application Support Directory
+    
+    :param: url file's url
+    :param: path relative path to be save in Application Support Directory
+    :param: isOverwrite allow to overwrite if same file is exist, disable this attribute will skip the download
+    :param: cb Javascript callback
+    */
+    func _downloadAndCache(url: String, path: String, isOverwrite: Bool, cb: String -> ()) {
+        let fileManager = NSFileManager.defaultManager()
+        let dir = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).first
+        let file = dir?.stringByAppendingString(NSBundle.mainBundle().bundleIdentifier!).stringByAppendingString(path)
+        
+        // skip download if file is already existed
+        if (fileManager.fileExistsAtPath(file!) && !isOverwrite) {
+            cb("The \(file) is already existed.")
+            return
+        }
+        
+        let config = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session = NSURLSession(configuration: config, delegate: nil, delegateQueue: nil)
+        let request = NSURLRequest(URL: NSURL(string: url)!)
+        
+        let downloadTask = session.downloadTaskWithRequest(request, completionHandler: {
+            (tempUrl, res, err) -> Void in
+            do {
+                let data = try NSData(contentsOfURL: tempUrl!, options: NSDataReadingOptions.DataReadingMappedAlways)
+                fileManager.createFileAtPath(file!, contents: data, attributes: nil)
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            cb("\(file) had been downloaded sucessful.")
+        })
+        
+        downloadTask.resume()
+    }
+    
+    /**
+    Clear the cached file in the Application Support Directory
+    
+    :param: path relative path to be save in Application Support Directory
+    :param: cb Javascript callback
+    */
+    func _clearCache(path: String, cb: String -> ()) {
+        let fileManager = NSFileManager.defaultManager()
+        let dir = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).first
+        let file = dir?.stringByAppendingString(NSBundle.mainBundle().bundleIdentifier!).stringByAppendingString(path)
+    
+        do {
+            try fileManager.removeItemAtPath(file!)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        cb("\(file) had been cleared.")
+    }
+    
+    /**
     Scan specified type of metadata using camera
+    
     
     :param: metadataTypes code types
     :param: cb JAvascript callback
