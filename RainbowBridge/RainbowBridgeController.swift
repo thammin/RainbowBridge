@@ -61,6 +61,8 @@ class RainbowBridgeController: WKUserContentController {
                 self._downloadAndCache(object["url"]! as! String, path: object["path"]! as! String, isOverwrite: object["isOverwrite"]! as! Bool, cb: { cb($0) })
             case "clearCache":
                 self._clearCache(object["path"]! as! String, cb: { cb($0) })
+            case "playSound":
+                self._playSound(object["file"]! as! String, cb: { cb($0) })
             case "scanMetadata":
                 self._scanMetadata(object["metadataTypes"]! as! Array, cb: { cb($0) })
             case "playVibration":
@@ -226,6 +228,22 @@ class RainbowBridgeController: WKUserContentController {
             print(error.localizedDescription)
         }
         cb("'`\(file!)` had been cleared.'")
+    }
+    
+    /**
+    Play cached sound
+    
+    :param: file the full path of cached sound
+    :param: cb Javascript callback
+    */
+    func _playSound(file: String, cb: String -> ()) {
+        do {
+            let player = try AVAudioPlayer.init(contentsOfURL: NSURL.fileURLWithPath(file))
+            player.play()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        cb("true")
     }
     
     /**
