@@ -174,7 +174,7 @@ class RainbowBridgeController: WKUserContentController {
     func _downloadAndCache(url: String, path: String, isOverwrite: Bool, cb: String -> ()) {
         let fileManager = NSFileManager.defaultManager()
         let dir = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).first
-        let file = dir?.stringByAppendingString("/" + NSBundle.mainBundle().bundleIdentifier! + path)
+        let file = dir?.stringByAppendingString(path)
         
         // create Application Support directory if not existed
         if (fileManager.fileExistsAtPath(dir!)) {
@@ -218,7 +218,7 @@ class RainbowBridgeController: WKUserContentController {
     func _clearCache(path: String, cb: String -> ()) {
         let fileManager = NSFileManager.defaultManager()
         let dir = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).first
-        let file = dir?.stringByAppendingString("/" + NSBundle.mainBundle().bundleIdentifier! + path)
+        let file = dir?.stringByAppendingString(path)
     
         do {
             try fileManager.removeItemAtPath(file!)
